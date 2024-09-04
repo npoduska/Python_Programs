@@ -53,19 +53,29 @@ def add():
         messagebox.showinfo(title="Entry field error", message="Please do not leave any fields empty!")
     else:        
         #Messagebox confirming entry
-        is_ok = messagebox.askokcancel(title=website, message = f"These are the details entered: \nEmail: {email_username}\n Password: {password}\n Is it ok to save?")
+        # is_ok = messagebox.askokcancel(title=website, message = f"These are the details entered: \nEmail: {email_username}\n Password: {password}\n Is it ok to save?")
         # print(website) #Testing purposes only!
-    
-        if is_ok: #If all entry boxes have been filled in & info is confirmed, do the following stuff...
+        try:
+        # if is_ok: #If all entry boxes have been filled in & info is confirmed, do the following stuff...
             #Write to file
-            with open("Password_Manager/data.txt", "a") as file:
-                file.write(f"{website} | {email_username} | {password}\n") 
+            with open("Password_Manager/data.json", "r") as file: #Open file in read mode
+                # file.write(f"{website} | {email_username} | {password}\n") 
+                # json.dump(new_data, file, indent=4) #Writing to json file instead of a text file
+                data = json.load(file) #Reading data from json file
+                # print(data)
+        except FileNotFoundError: #Do this if file has not been created yet.
+            with open("Password_Manager/data.json", "w") as file: #Open file in write mode
+                json.dump(new_data, file, indent=4) #Writing to new json file
+        else: #Do this if there are no errors flagged
+            data.update(new_data)  #Appending or adding data to json file
             
+            with open("Password_Manager/data.json", "w") as file: #Open file in write mode
+                json.dump(data, file, indent=4)
+        finally:        
             #Delete the entries in the Website and password entry fields. Can keep the email field alone.
-                website_entry.delete(0,'end')
-                password_entry.delete(0, 'end')
-                website_entry.focus()
-    
+            website_entry.delete(0,'end')
+            password_entry.delete(0, 'end')
+            website_entry.focus()
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
