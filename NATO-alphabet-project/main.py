@@ -40,7 +40,16 @@ alphabet_dict = {row.letter:row.code for (index, row) in alphabet_data.iterrows(
 
 #TODO 2. Create a list of the phonetic code words from a word that the user inputs.
 
-word = input("Enter a word: ").upper()
-output_list = [alphabet_dict[letter] for letter in word]
+def create_code():
+    
+    word = input("Enter a word: ").upper()
 
-print(output_list)
+    try:
+        output_list = [alphabet_dict[letter] for letter in word]
+    except KeyError: #Handling user input error.
+        print("Enter only letters from the alphabet. No numbers or symbols.")
+        create_code()
+    else:
+        print(output_list)
+    
+create_code()
