@@ -1,13 +1,14 @@
-"""This program saves your passwords needed for different websites.
+"""This program saves your login credentials needed for different websites.
 The program can also generate a random password for you if you want. 
-And once that random password is generated, it is automaticly copied to clipboard for you to paste into the website form.
-The website, email/username, and password info is saved in a text file.
+And once that random password is generated, it is automatically copied to clipboard for you to paste into the website form.
+The website, email/username, and password info is saved in a json file.
 """
 
 from tkinter import *  #import everthing from tkinter
 from tkinter import messagebox
 from random import choice, shuffle, randint 
 import pyperclip
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
@@ -44,10 +45,13 @@ def generate_password():
 def add():
     
     #Collecting the entries inputed
-    website = website_entry.get()
+    website = website_entry.get().lower()
     email_username = email_username_entry.get()
     password = password_entry.get()
-    
+    new_data = {website:{
+        "email:": email_username,
+        "password:": password,
+    }}
     # Make sure all entry boxes have been filled in
     if len(website)==0 or len(email_username)==0 or len(password)==0:  # This will be True if there is an empty string
         messagebox.showinfo(title="Entry field error", message="Please do not leave any fields empty!")
@@ -76,6 +80,27 @@ def add():
             website_entry.delete(0,'end')
             password_entry.delete(0, 'end')
             website_entry.focus()
+# ---------------------------- SEARCH BUTTON ------------------------------- #
+def find_password():
+    #Collecting the entries inputed
+    website = website_entry.get().lower()
+    
+    if len(website)==0:  # This will be True if there is an empty string
+        messagebox.showinfo(title="Entry field error", message="Please enter a website")
+    else:
+        try:
+            with open("Password_Manager/data.json", "r") as data_file: #Open file in read mode
+                data = json.load(data_file) #Reading data from json file
+        except FileNotFoundError:
+            messagebox.showinfo(title="Data File Error", message="Data file does not exist yet.")
+        else:   
+            if website in data:
+                email = data[website]["email:"]
+                password = data[website]["password:"]
+                print(email, password)
+                messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+            else:
+                messagebox.showinfo(title="Data Error", message=f"{website} does not exist in the database.")
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -99,8 +124,8 @@ password_label = Label(text="Password:")
 password_label.grid(column=0, row=3)
 
 # Website Entry
-website_entry = Entry(width = 35)
-website_entry.grid(column=1, row=1, columnspan=2)
+website_entry = Entry(width = 21)
+website_entry.grid(column=1, row=1)
 website_entry.focus()
 # Email/Username Entry
 email_username_entry = Entry(width = 35)
@@ -116,6 +141,13 @@ generate_password_button.grid(column=2, row=3)
 # Setting up the Add button
 add_button = Button(text = "Add", width = 36, command = add)
 add_button.grid(column=1, row=4, columnspan=2)
-
+# Setting up the Search Website button
+search_website_button = Button(text = "Search Website", width=13, command = find_password)
+search_website_button.grid(column=2, row=1)
+#Disable search button if nothing was entered into website field
+# if len(website_entry.get()) == 0:
+#     search_website_button.config(state=DISABLED)
+# else:
+#     search_website_button.config(state=NORMAL)
 
 window.mainloop() #Keep the window open and forever looping though the program
