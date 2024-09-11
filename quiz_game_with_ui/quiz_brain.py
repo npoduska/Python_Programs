@@ -7,13 +7,10 @@ class QuizBrain:
         self.score = 0
         self.question_list = q_list
         self.current_question = None
+        self.category_data = None
 
     def still_has_questions(self):
         return self.question_number < len(self.question_list)
-
-    # def category_text(self):
-    #      q_text = html.unescape(self.current_question.text)
-    #     return f"Q.{self.question_number}: {q_text} (True/False): "
         
     def next_question(self):
         self.current_question = self.question_list[self.question_number]

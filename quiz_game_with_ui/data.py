@@ -14,8 +14,10 @@ response.raise_for_status()
 data = response.json()
 # print(data)
 question_data = data['results']
-# print(data['results'][0]['category'])
-# data_category = (data['results'][0]['category'])
+# print(question_data[0]['category'])
+print(data['results'][0]['category'])
+category_data = (data['results'][0]['category'])
+# print(category_data)
 
 #No longer need to collect a dictionary now, as a new one gets generated every time the quiz gets played.
 # question_data = [

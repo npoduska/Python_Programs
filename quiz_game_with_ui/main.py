@@ -1,3 +1,6 @@
+"""This is a quiz game pulling 10 questions from different categories from an API.
+This is similar to the original quiz game program, but this one has a user interface. """
+
 from question_model import Question
 from data import question_data
 from quiz_brain import QuizBrain
@@ -9,7 +12,6 @@ for question in question_data:
     question_answer = question["correct_answer"]
     new_question = Question(question_text, question_answer)
     question_bank.append(new_question)
-
 
 quiz = QuizBrain(question_bank)
 quiz_ui = QuizInterface(quiz)

@@ -1,15 +1,18 @@
 from tkinter import *
 from quiz_brain import QuizBrain
+from data import category_data
+import html
 
 THEME_COLOR = "#375362"
 FONT = "Arial", 20, "italic"
+FONT2 = "Arial", 10, "italic"
 
 class QuizInterface:
     
     
     def __init__(self, quiz_brain: QuizBrain):
         self.quiz = quiz_brain
-        
+        self.category_data = category_data
         self.window = Tk()
         self.window.title("Quizzler")
         self.window.config(padx=20, pady=20, bg=THEME_COLOR) 
@@ -30,10 +33,12 @@ class QuizInterface:
         self.score_label = Label(text="Score: 0", fg="white", bg=THEME_COLOR, font=FONT)
         self.score_label.grid(column=1, row=0)
         
-        # # Category Label
-        # self.category_label = Label(text="Category: ", fg="white", bg=THEME_COLOR, font=FONT)
-        # self.category_label.grid(column=0, row=0)
-        # self.canvas.itemconfig(self.question_text, text= q_text)
+        # Category Label
+        self.category_label = Label(text=f"Category: {html.unescape(self.category_data)}",
+                                    fg="white",
+                                    bg=THEME_COLOR,
+                                    font=FONT2)
+        self.category_label.grid(column=0, row=0)
         
         # Setting up wrong button
         x_image = PhotoImage(file="quiz_game_with_ui\\images\\false.png")
