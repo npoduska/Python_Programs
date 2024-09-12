@@ -8,12 +8,14 @@ But no new features are planned to be added, as all the important questions have
 
 #-------------------IMPORTS---------------------------------
 import requests, json
+from config import *
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from datetime import datetime
 from timezonefinder import TimezoneFinder
 import pytz
 import feedparser
+
 
 #------------------INPUT YOUR LOCATION, CONVERT IT TO LAT/LONG COORDINATES---------------------------------
 #Enter your location
@@ -29,7 +31,7 @@ CITY = "Denver"
 
 #First get the coordinates of location
 # Create a geolocator object with a user-defined app name
-geolocator = Nominatim(user_agent="where_is_iss")
+geolocator = Nominatim(user_agent= USER_AGENT)
 
 # Format the location string
 location_str = f"{CITY}, {REGION}, {COUNTRY}"
@@ -42,8 +44,8 @@ try:
         # Extract latitude and longitude
         country_lat = location.latitude
         country_long = location.longitude
-        print(f"Latitude: {country_lat}")
-        print(f"Longitude: {country_long}")
+        print(f"City Latitude: {country_lat}")
+        print(f"City Longitude: {country_long}")
     else:
         print("Location not found.")
 except GeocoderTimedOut:
@@ -143,8 +145,8 @@ try:
     import http.client
     conn = http.client.HTTPSConnection("isitwater-com.p.rapidapi.com")
     headers = {
-        'x-rapidapi-key': "6ab50b10f6msh146d500a5b440b9p1ec5d0jsn403f74533693",
-        'x-rapidapi-host': "isitwater-com.p.rapidapi.com"
+        'x-rapidapi-key': X_RAPIDAPI_KEY,
+        'x-rapidapi-host': X_RAPIDAPI_HOST,
     }
     conn.request("GET", f"/?latitude={iss_latitude}&longitude={iss_longitude}", headers=headers)
     res = conn.getresponse()
@@ -161,7 +163,7 @@ except GeocoderTimedOut:
     print("Geocoding service timed out. Please try again later.")
 
 #Report where ISS is right now...
-key = "817072862591046691307x8414"
+key = API_KEY
 print(f"https://geocode.xyz/{iss_latitude},{iss_longitude}?geoit=json&auth={key}")
 # print(f"https://geocode.xyz/{latitude},{longitude}?geoit=xml&auth={key}")
 response = requests.get(f"https://geocode.xyz/{iss_latitude},{iss_longitude}?geoit=json&auth={key}")
