@@ -7,6 +7,14 @@ screen = turtle.Screen()
 screen.title("U.S. States Game")
 image = "us-states-game/blank_states_img.gif"
 screen.addshape(image)
+
+# Set the actual window dimensions
+image_width = 800
+image_height = 500
+
+# Set the window size 
+screen.setup(width=image_width, height=image_height)
+
 turtle.shape(image)
 
 # To collect the x,y coordinates on the gif image
